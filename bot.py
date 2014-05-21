@@ -15,7 +15,6 @@ USERNAME = config.get("reddit", "username")
 PASSWORD = config.get("reddit", "password")
 PATHTODB = config.get("technical", "pathtodb")
 USER_AGENT = config.get("technical", "user_agent")
-SUBREDDITS = config.get("reddit", "subreddit")
 MESSAGE_SUBJECT = config.get("message", "subject", raw = True)
 MESSAGE_MESSAGE = config.get("message", "message", raw = True).replace("\n", "\n\n")
 ALLOWED_DOMAINS = config.get("behavior", "allowed_domains").split(",")
@@ -27,6 +26,7 @@ if config.get("technical", "debug") == "on":
     logging.basicConfig(level=logging.DEBUG) 
 else:
     logging.basicConfig(level=logging.ERROR) 
+
 
 # if USERNAME and PASSWORD isn't set the bot will use the environment variables
 if USERNAME in ["username", ""]:
@@ -52,11 +52,10 @@ c = conn.cursor()
 
 # create the tables if it don't exist
 c.execute("CREATE TABLE IF NOT EXISTS checked_ids (id TEXT);");
-c.execute("CREATE TABLE IF NOT EXISTS users (username TEXT, domain TEXT, submission_id TEXT, time_utc TEXT);");
-c.execute("CREATE TABLE IF NOT EXISTS watched_subreddits (subreddit TEXT);");
+c.execute("CREATE TABLE IF NOT EXISTS users (username TEXT, domain TEXT, submission_id TEXT UNIQUE, time_utc TEXT);");
+c.execute("CREATE TABLE IF NOT EXISTS watched_subreddits (subreddit TEXT UNIQUE);");
 
 
-#for subreddit in SUBREDDITS.split(","):
 c.execute("SELECT subreddit FROM watched_subreddits")
 srs = c.fetchall()
 for sr in srs:
@@ -111,10 +110,20 @@ for sr in srs:
         
         send_modmail = False
         # Check allowed domains (ALLOWED_DOMAINS)
+        def is_allowed(domain, ALLOWED_DOMAINS):
+            if domain in ALLOWED_DOMAINS:
+                return True
+            for d in ALLOWED_DOMAINS:
+                # if wildcard notation is used
+                if "*." in d:
+                    if d[2:] in domain:
+                        return True
+            return False
+        
         for (domain, percentage) in frequent_domains:
             if (percentage > THRESHOLD_PERCENTAGE
-                and domain not in ALLOWED_DOMAINS
-                and "self." not in domain):
+                and "self." not in domain
+                and not is_allowed(domain, ALLOWED_DOMAINS)):
                 send_modmail = True
         
 
