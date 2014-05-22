@@ -38,6 +38,9 @@ def crawl_author(author_name, r, c, conn):
 
     # add new submissions
     for submission in author_submissions:
+        # skip if self
+        if submission.is_self:
+            continue
         values = (submission.author.name, submission.domain, submission.id, submission.created_utc)
         c.execute("INSERT OR IGNORE INTO users (username, domain, submission_id, time_utc) \
                    VALUES (?, ?, ?, ?)", values)
