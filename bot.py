@@ -123,9 +123,6 @@ for sr in srs:
         c.execute("INSERT INTO checked_ids VALUES (?)", (x.id, ))
         conn.commit()
 
-        time.sleep(5)
-
-
 # accept sub if get moderator
 for new_message in r.get_unread(unset_has_mail=True, update_user=True):
     # add subreddit to watched subreddits if the bot got a mod invite
