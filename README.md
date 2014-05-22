@@ -1,7 +1,7 @@
 # DomainBot for Reddit
 
 ## Description
-DomainBot checks if users post predomately links to one domain. 
+DomainBot checks if users post predomately links from a few domains. You can filter out domains which should be allowed, set the limit per domain and total limit of minimum submissions required. If the limit is exceeded the bot will send a modmail to the subreddit. Subreddits can be added by going the bot a mod privilege or by hand using SQL (advanced).
 
 
 ## Installation
@@ -20,12 +20,28 @@ which can be easily installed using pip
 Open the config.ini and edit it accordingly. These are the things you have to edit:
 
     [reddit]
-    username=username ; reddit username of your bot
-    password=password ; reddit password of your bot
-    subreddits=pics,politics ; subreddit in which the bot should work separated by comma
+    username=username
+    password=password
+
+    [behavior]
+    ; these domains won't trigger a modmail
+    allowed_domains=i.imgur.com,imgur.com,youtube.com,youtu.be,*.deviantart.com
+    ; how many submissions should be crawled?
+    submission_limit=20
+    ; how many submissions per domain in % are allowed?
+    threshold_percentage=20
+    ; how many submissions should the users have at least?
+    threshold_total=8
+
+
 
     [technical]
-    pathtodb=/home/tim/domainbot/db.db ; path to your bot's database, just use your bot's directory + db.db
+    ; path to your bot's db – normally just the directory in which you have the bot.py + db.db
+    pathtodb=/home/tim/domainbot/db.db
+    ; debug = on / off
+    ; set debug = OFF to run the bot in production (i.e. sending messages)
+    debug=on 
+
 
 ## Usage
 
@@ -35,7 +51,8 @@ If you execute the bot.py with
 
     python bot.py
 
-it will crawl the /new page and check each new submissions. For each submission it will crawl the poster's submission history and determine the amount of submissions which are from one domain.
+it will crawl the /new page and check each new submissions. For each submission it will crawl the poster's submission history and determine the amount of submissions which are from one domain. If the poster exceeds the limits the bot will send a modmail to the examined subreddit.
+
 
 ## Requests / Questions
 
