@@ -1,7 +1,7 @@
 # DomainBot for Reddit
 
 ## Description
-DomainBot checks if users post predomately links from a few domains. You can filter out domains which should be allowed, set the limit per domain and total limit of minimum submissions required. If the limit is exceeded the bot will send a modmail to the subreddit. Subreddits can be added by going the bot a mod privilege or by hand using SQL (advanced).
+DomainBot checks if users post predomately links from a few domains. You can filter out domains which should be allowed, set the limit per domain and total limit of minimum submissions required. Self posts are ignored. If the limit is exceeded the bot will send a modmail to the subreddit. Subreddits can be added by going the bot a mod privilege or by hand using SQL (advanced).
 
 
 ## Installation
