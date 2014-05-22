@@ -45,6 +45,8 @@ Open the config.ini and edit it accordingly. These are the things you have to ed
 
 ## Usage
 
+### General
+
 *I would recommend that you bot's account should have some link karma so that it can send messages without captcha restrictions.*
 
 If you execute the bot.py with
@@ -53,6 +55,9 @@ If you execute the bot.py with
 
 it will crawl the /new page and check each new submissions. For each submission it will crawl the poster's submission history and determine the amount of submissions which are from one domain. If the poster exceeds the limits the bot will send a modmail to the examined subreddit.
 
+### Generate domain stats for specific user
+
+You can send a message to the bot with the subject "scan" and the text "/u/USERNAME". USERNAME is the name of user you want domain statistics about. 
 
 ## Requests / Questions
 
