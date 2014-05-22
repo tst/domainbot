@@ -9,10 +9,16 @@ config.read("config.ini")
 ## get variables
 USERNAME = config.get("reddit", "username")
 PASSWORD = config.get("reddit", "password")
+
 PATHTODB = config.get("technical", "pathtodb")
 USER_AGENT = config.get("technical", "user_agent")
+
 MESSAGE_SUBJECT = config.get("message", "subject", raw = True)
 MESSAGE_MESSAGE = config.get("message", "message", raw = True).replace("\n", "\n\n")
+
+MESSAGE_PRIVATE_SUBJECT = config.get("message", "privatesubject", raw = True)
+MESSAGE_PRIVATE_MESSAGE = config.get("message", "privatemessage", raw = True).replace("\n", "\n\n")
+
 ALLOWED_DOMAINS = config.get("behavior", "allowed_domains").split(",")
 SUBMISSION_LIMIT = int(config.get("behavior", "submission_limit"))
 THRESHOLD_PERCENTAGE = int(config.get("behavior", "threshold_percentage"))
