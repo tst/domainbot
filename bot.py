@@ -6,41 +6,7 @@ import sys
 import logging
 import math
 import ConfigParser
-
-config = ConfigParser.SafeConfigParser()
-config.read("config.ini")
-
-## get variables
-USERNAME = config.get("reddit", "username")
-PASSWORD = config.get("reddit", "password")
-PATHTODB = config.get("technical", "pathtodb")
-USER_AGENT = config.get("technical", "user_agent")
-MESSAGE_SUBJECT = config.get("message", "subject", raw = True)
-MESSAGE_MESSAGE = config.get("message", "message", raw = True).replace("\n", "\n\n")
-ALLOWED_DOMAINS = config.get("behavior", "allowed_domains").split(",")
-SUBMISSION_LIMIT = int(config.get("behavior", "submission_limit"))
-THRESHOLD_PERCENTAGE = int(config.get("behavior", "threshold_percentage"))
-THRESHOLD_TOTAL = int(config.get("behavior", "threshold_total"))
-
-if config.get("technical", "debug") == "on":
-    logging.basicConfig(level=logging.DEBUG) 
-else:
-    logging.basicConfig(level=logging.ERROR) 
-
-
-# if USERNAME and PASSWORD isn't set the bot will use the environment variables
-if USERNAME in ["username", ""]:
-    try:
-        USERNAME = os.environ['DOMAINBOT_USERNAME']
-    except KeyError:
-        sys.exit("Please add the username or set the environment variable DOMAINBOT_USERNAME")
-
-if PASSWORD in ["password", ""]:
-    try:
-        PASSWORD = os.environ['DOMAINBOT_PASSWORD']
-    except KeyError:
-        sys.exit("Please add the password or set the environment variable STORYBOT_PASSWORD")
-
+from handle_config import *
 
 # login to Reddit
 r = praw.Reddit(user_agent=USER_AGENT)
