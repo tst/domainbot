@@ -22,7 +22,10 @@ def is_allowed(domain, ALLOWED_DOMAINS):
 
 def crawl_author(author_name, r, c, conn):
     # get Redditor instance
-    author = r.get_redditor(author_name)
+    try:
+        author = r.get_redditor(author_name)
+    except Exception as e:
+        logging.error(e)
 
     # check if user exists and get it's last crawled submission
     c.execute("SELECT submission_id FROM users WHERE username = ? ORDER BY time_utc DESC LIMIT 1", (author_name, ))
