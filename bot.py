@@ -26,6 +26,7 @@ def crawl_author(author_name, r, c, conn):
         author = r.get_redditor(author_name)
     except Exception as e:
         logging.error(e)
+        return False
 
     # check if user exists and get it's last crawled submission
     c.execute("SELECT submission_id FROM users WHERE username = ? ORDER BY time_utc DESC LIMIT 1", (author_name, ))
@@ -48,7 +49,7 @@ def crawl_author(author_name, r, c, conn):
         c.execute("INSERT OR IGNORE INTO users (username, domain, submission_id, time_utc) \
                    VALUES (?, ?, ?, ?)", values)
     conn.commit()
-    return
+    return True
 
 
 def create_author_stats(author_name, c): 
@@ -143,7 +144,9 @@ for sr in srs:
             continue
         
         # update user's submission
-        crawl_author(x.author.name, r, c, conn)
+        # skip the rest if the user isn't available
+        if not crawl_author(x.author.name, r, c, conn):
+            continue
       
         send_modmail, frequent_domains = create_author_stats(x.author.name, c)
         
@@ -181,7 +184,9 @@ for new_message in r.get_unread(unset_has_mail=True, update_user=True):
             author = new_message.body[3:]
             logging.debug("Requesting stats about /u/%s" % author)
             
-            crawl_author(author, r, c, conn)
+            # skip the rest if the user isn't available
+            if not crawl_author(author, r, c, conn):
+                continue
             _, frequent_domains = create_author_stats(author, c)
             send_author_stats(author_name = author, frequent_domains = frequent_domains, \
                               to_user = new_message.author.name)
