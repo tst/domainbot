@@ -23,6 +23,7 @@ ALLOWED_DOMAINS = config.get("behavior", "allowed_domains").split(",")
 SUBMISSION_LIMIT = int(config.get("behavior", "submission_limit"))
 THRESHOLD_PERCENTAGE = int(config.get("behavior", "threshold_percentage"))
 THRESHOLD_TOTAL = int(config.get("behavior", "threshold_total"))
+SKIP_ALLOWED_DOMAINS = config.get("behavior", "skip_allowed_domains")
 
 if config.get("technical", "debug") == "on":
     logging.basicConfig(level=logging.DEBUG) 

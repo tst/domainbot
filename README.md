@@ -32,14 +32,12 @@ Open the config.ini and edit it accordingly. These are the things you have to ed
     threshold_percentage=20
     ; how many submissions should the users have at least?
     threshold_total=8
-
-
+    ; skips test if the submission is in allowed_domains
+    skipped_allowed_domains=on
 
     [technical]
-    ; path to your bot's db – normally just the directory in which you have the bot.py + db.db
-    pathtodb=/home/tim/domainbot/db.db
     ; debug = on / off
-    ; set debug = OFF to run the bot in production (i.e. sending messages)
+    ; set debug = off to run the bot in production (i.e. sending messages)
     debug=on 
 
 

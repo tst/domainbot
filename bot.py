@@ -143,6 +143,10 @@ for sr in srs:
         if x.author is None:
             continue
         
+        # skip user if submission is in allowed domains
+        if SKIP_ALLOWED_DOMAINS == "on" and is_allowed(x.domain, ALLOWED_DOMAINS):
+            continue
+        
         # update user's submission
         # skip the rest if the user isn't available
         if not crawl_author(x.author.name, r, c, conn):
